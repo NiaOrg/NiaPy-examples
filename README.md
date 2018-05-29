@@ -3,7 +3,7 @@ This repository is containing various examples of usage of the [NiaPy micro-fram
 
 Current list of examples:
 
-- [Optimization of KNN parameters](https://github.com/NiaOrg/NiaPy-examples) 
+- [Optimization of KNN parameters](https://github.com/NiaOrg/NiaPy-examples/tree/master/optimize_KNN_parameters) 
 
 ## Contributing
 
