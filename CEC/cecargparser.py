@@ -11,7 +11,7 @@ def str2bool(x): return True if x in ['true', 'True', 'TRUE', 'T', 'yes', 'Yes',
 
 def MakeArgParserCEC():
 	parser = MakeArgParser()
-	parser.add_argument('-sr', '--srange', dest='srange', nargs='2', default=[-100, 100], type=int)
+	parser.add_argument('-sr', '--srange', dest='srange', nargs=2, default=[-100, 100], type=int)
 	parser.add_argument('-f', '--fnum', dest='fnum', default=cfuns[0], choices=cfuns, type=int)
 	parser.add_argument('-d', '--dim', dest='D', default=cdims[0], choices=cdims, type=int)
 	parser.add_argument('-r', '--record', dest='record', default=cdims[-1], choices=cdims, type=int)

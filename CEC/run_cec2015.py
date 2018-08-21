@@ -9,7 +9,6 @@ sys.path.append('cec2015')
 import random
 import logging
 from numpy import asarray
-from cecargparser import getDictArgs
 from NiaPy.algorithms.basic import ArtificialBeeColonyAlgorithm
 from NiaPy.algorithms.basic import BatAlgorithm
 from NiaPy.algorithms.basic import CamelAlgorithm
@@ -31,6 +30,7 @@ from NiaPy.algorithms.other import MultipleTrajectorySearch, MultipleTrajectoryS
 from NiaPy.algorithms.other import AnarchicSocietyOptimization
 from NiaPy.benchmarks.utility import Task, TaskConvPrint, TaskConvPlot, OptimizationType
 from cec2015 import run_fun
+from cecargparser import getDictArgs
 
 logging.basicConfig()
 logger = logging.getLogger('examples')
@@ -75,9 +75,9 @@ def plot_example(alg, fnum=1, D=10, nFES=50000, nGEN=5000, seed=None, optType=Op
 	logger.info('%s %s' % (best[0], best[1]))
 	input('Press [enter] to continue')
 
-def getOptType(strtype):
-	if strtype == 'min': return OptimizationType.MINIMIZATION, MinMB
-	elif strtype == 'max': return OptimizationType.MAXIMIZATION, MaxMB
+def getOptType(otype):
+	if otype == OptimizationType.MINIMIZATION: return MinMB
+	elif otype == OptimizationType.MAXIMIZATION: return MaxMB
 	else: return None
 
 if __name__ == '__main__':
@@ -105,14 +105,14 @@ if __name__ == '__main__':
 	# algo = FireworksAlgorithm
 	# algo = EnhancedFireworksAlgorithm
 	# algo = DynamicFireworksAlgorithm
-	algo = DynamicFireworksAlgorithmGauss
+	# algo = DynamicFireworksAlgorithmGauss
 	# algo = SelfAdaptiveDifferentialEvolutionAlgorithm
-	# algo = DynNPSelfAdaptiveDifferentialEvolutionAlgorithm
+	algo = DynNPSelfAdaptiveDifferentialEvolutionAlgorithm
 	# algo = AnarchicSocietyOptimization
 	pargs = getDictArgs(sys.argv[1:])
-	optType, optFunc = getOptType(pargs.pop('optType', 'min'))
-	if not pargs['runType']: simple_example(algo, optType=optType, optFunc=optFunc, **pargs)
-	elif pargs['runType'] == 'log': logging_example(algo, optType=optType, optFunc=optFunc, **pargs)
-	elif pargs['runType'] == 'plot': plot_example(algo, optType=optType, optFunc=optFunc, **pargs)
+	optFunc = getOptType(pargs['optType'])
+	if not pargs['runType']: simple_example(algo, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'log': logging_example(algo, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'plot': plot_example(algo, optFunc=optFunc, **pargs)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
