@@ -5,7 +5,7 @@ sys.path.append('cec2014')
 
 import random
 import logging
-from numpy import asarray
+from numpy import asarray, savetxt
 from NiaPy import Runner
 from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType
 from cec2014 import run_fun
@@ -34,12 +34,18 @@ class MaxMB(MinMB):
 		def e(D, sol): return -f(D, sol)
 		return e
 
-def simple_example(alg, fnum=1, runs=10, D=10, nFES=50000, nGEN=5000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kwu):
+def simple_example(alg, fnum=1, runs=10, D=10, nFES=50000, nGEN=5000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, wout=False, **kwu):
+	bests = list()
 	for i in range(runs):
 		task = Task(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(fnum))
 		algo = alg(seed=seed, task=task)
-		Best = algo.run()
-		logger.info('%s %s' % (Best[0], Best[1]))
+		best = algo.run()
+		logger.info('%s %s' % (best[0], best[1]))
+		bests.append(best)
+	if wout:
+		bpos, bval = asarray([x[0] for x in bests]), asarray([x[1] for x in bests])
+		savetxt('%s_%d_%d_p' % (algo.sName, fnum, D), bpos)
+		savetxt('%s_%d_%d_v' % (algo.sName, fnum, D), bval)
 
 def logging_example(alg, fnum=1, D=10, nFES=50000, nGEN=5000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **ukw):
 	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(fnum))
@@ -61,10 +67,12 @@ def getOptType(otype):
 
 if __name__ == '__main__':
 	pargs = getDictArgs(sys.argv[1:])
+	pargs['nFES'] = round(pargs['D'] * 10000 * pargs['reduc'])
 	algo = Runner.getAlgorithm(pargs['algo'])
 	optFunc = getOptType(pargs['optType'])
 	if not pargs['runType']: simple_example(algo, optFunc=optFunc, **pargs)
 	elif pargs['runType'] == 'log': logging_example(algo, optFunc=optFunc, **pargs)
 	elif pargs['runType'] == 'plot': plot_example(algo, optFunc=optFunc, **pargs)
+	else: simple_example(algo, optFunc=optFunc, **pargs)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
