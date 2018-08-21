@@ -6,5 +6,5 @@ build:
 
 clean:
 	rm -r build
-	rm cec2014.cpython-37m-x86_64-linux-gnu.so
+	rm *.so
 	rm cec2014.cpp

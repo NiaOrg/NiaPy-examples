@@ -9,7 +9,7 @@ sys.path.append('cec2015')
 import random
 import logging
 from numpy import asarray
-from margparser import getDictArgs
+from cecargparser import getDictArgs
 from NiaPy.algorithms.basic import ArtificialBeeColonyAlgorithm
 from NiaPy.algorithms.basic import BatAlgorithm
 from NiaPy.algorithms.basic import CamelAlgorithm
