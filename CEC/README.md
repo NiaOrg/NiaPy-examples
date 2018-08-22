@@ -20,7 +20,7 @@ If every thing ok you sould see the output of function values and coordinates fo
 
 Our program has default command line interface swiches from NiaPy
 Our example has next switches you can set in command line interface:
-- `-c` or `--cec`: Set the benchmark to use. Options: `14, 15, 17`.
+- `-c` or `--cec`: Set the benchmark competition to use. Options: `13, 14, 15, 17, 18`.
 - `-f` or `--fnum`: Set the function number you want to use. Options varay by the benchmark used.
 - `-sr` or `--srange`: Set the upper and lower limit of search space for selected function. Options: negative in positive real numbers where is the first number lower than second number.
 - `-d` or `--dim`: Set the number of dimensions of the selected function. Options: `10, 30, 50, 100`.
@@ -30,7 +30,7 @@ Our example has next switches you can set in command line interface:
 
 ## Run example
 
-Run command: `python run_cec2017.py -a 'ASO' -D 10 -f 12 -r log`
+Run command: `python run_cec.py -a 'ASO' -D 10 -f 12 -r log`
 
 Output of run command:
 ```

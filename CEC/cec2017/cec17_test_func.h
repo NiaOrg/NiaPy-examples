@@ -1,3 +1,6 @@
+#ifndef CEC17_TEST_FUNC_H 
+#define CEC17_TEST_FUNC_H
+
 #define INF 1.0e99
 #define EPS 1.0e-14
 #define E  2.7182818284590452353602874713526625
@@ -60,3 +63,5 @@ void cf_cal(double *, double *, int, double *,double *,double *,double *,int);
 
 double* cec17_test_func(double*, double*, int, int, int);
 double runtest(double*, int, int);
+
+#endif

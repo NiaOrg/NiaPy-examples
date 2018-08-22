@@ -1,3 +1,11 @@
+#ifndef CEC14_TEST_FUNC_H 
+#define CEC14_TEST_FUNC_H
+
+#define INF 1.0e99
+#define EPS 1.0e-14
+#define E  2.7182818284590452353602874713526625
+#define PI 3.1415926535897932384626433832795029
+
 void sphere_func (double *, double *, int , double *,double *, int, int); /* Sphere */
 void ellips_func(double *, double *, int , double *,double *, int, int); /* Ellipsoidal */
 void bent_cigar_func(double *, double *, int , double *,double *, int, int); /* Discus */
@@ -43,3 +51,5 @@ void cf_cal(double *, double *, int, double *,double *,double *,double *,int);
 
 double* cec14_test_func(double*, double*, int, int, int);
 double runtest(double *, int, int);
+
+#endif

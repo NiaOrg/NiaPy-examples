@@ -6,7 +6,7 @@ import logging
 from numpy import asarray, savetxt
 from NiaPy import Runner
 from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType
-from cecargparser import getDictArgs
+from cecargparser import getDictArgs, cdims
 
 logging.basicConfig()
 logger = logging.getLogger('cec_run')
@@ -31,21 +31,39 @@ class MaxMB(MinMB):
 		def e(D, sol): return -f(D, sol)
 		return e
 
-def getCecBench(cec):
-	f = None
-	if cec == 14:
+def getCecBench(cec, d):
+	if cec == 5:
+		sys.path.append('cec2005')
+		from cec2005 import run_fun
+		if d not in dims: raise Exception('Dimension sould be in %s' % (dims))
+	elif cec == 8:
+		sys.path.append('cec2008')
+		from cec2008 import run_fun
+	elif cec == 13:
+		sys.path.append('cec2013')
+		from cec2013 import run_fun
+		if d not in dims: raise Exception('Dimension sould be in %s' % (dims))
+	elif cec == 14:
 		sys.path.append('cec2014')
 		from cec2014 import run_fun
-		f = run_fun
+		if d not in dims: raise Exception('Dimension sould be in %s' % (dims))
 	elif cec == 15:
 		sys.path.append('cec2015')
 		from cec2015 import run_fun
-		f = run_fun
+		if d not in dims: raise Exception('Dimension sould be in %s' % (dims))
 	elif cec == 17:
 		sys.path.append('cec2017')
 		from cec2017 import run_fun
-		f = run_fun
-	return f
+		if d not in dims: raise Exception('Dimension sould be in %s' % (dims))
+	elif cec == 18:
+		sys.path.append('cec2018')
+		from cec2018 import run_fun
+		if d not in dims: raise Exception('Dimension sould be in %s' % (dims))
+	return run_fun
+
+def getMaxFES(cec):
+	if cec == 8: return 5000
+	if cec in [5, 13, 14, 15, 17, 18]: return 10000
 
 def simple_example(alg, cec, fnum=1, runs=10, D=10, nFES=50000, nGEN=5000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, wout=False, sr=[-100, 100], **kwu):
 	bests, func = list(), getCecBench(cec)
@@ -82,7 +100,7 @@ def getOptType(otype):
 
 if __name__ == '__main__':
 	pargs = getDictArgs(sys.argv[1:])
-	pargs['nFES'] = round(pargs['D'] * 10000 * pargs['reduc'])
+	pargs['nFES'] = round(pargs['D'] * getMaxFES(pargs['cec']) * pargs['reduc'])
 	algo = Runner.getAlgorithm(pargs['algo'])
 	optFunc = getOptType(pargs['optType'])
 	if not pargs['runType']: simple_example(algo, optFunc=optFunc, **pargs)

@@ -75,6 +75,5 @@ void set_number_of_run(int run);
 // dir can only like test/resultdir
 void write_result_statistics_to_file(char* dir, char * file_prefix);
 
-#endif //NO_RECORDING
-
-#endif //CEC15_TEST_FUNCTIONS_H
+#endif
+#endif
