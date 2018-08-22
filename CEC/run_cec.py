@@ -1,14 +1,11 @@
 # encoding=utf8
 import sys
 
-sys.path.append('cec2014')
-
 import random
 import logging
 from numpy import asarray, savetxt
 from NiaPy import Runner
 from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType
-from cec2014 import run_fun
 from cecargparser import getDictArgs
 
 logging.basicConfig()
@@ -19,13 +16,13 @@ logger.setLevel('INFO')
 random.seed(1234)
 
 class MinMB(object):
-	def __init__(self, fnum=1):
-		self.Lower = -100
-		self.Upper = 100
+	def __init__(self, run_fun, Lower=-100, Upper=100, fnum=1):
+		self.Lower, self.Upper = Lower, Upper
 		self.fnum = fnum
+		self.run_fun = run_fun
 
 	def function(self):
-		def evaluate(D, sol): return run_fun(asarray(sol), self.fnum)
+		def evaluate(D, sol): return self.run_fun(asarray(sol), self.fnum)
 		return evaluate
 
 class MaxMB(MinMB):
@@ -34,10 +31,26 @@ class MaxMB(MinMB):
 		def e(D, sol): return -f(D, sol)
 		return e
 
-def simple_example(alg, fnum=1, runs=10, D=10, nFES=50000, nGEN=5000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, wout=False, **kwu):
-	bests = list()
+def getCecBench(cec):
+	f = None
+	if cec == 14:
+		sys.path.append('cec2014')
+		from cec2014 import run_fun
+		f = run_fun
+	elif cec == 15:
+		sys.path.append('cec2015')
+		from cec2015 import run_fun
+		f = run_fun
+	elif cec == 17:
+		sys.path.append('cec2017')
+		from cec2017 import run_fun
+		f = run_fun
+	return f
+
+def simple_example(alg, cec, fnum=1, runs=10, D=10, nFES=50000, nGEN=5000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, wout=False, sr=[-100, 100], **kwu):
+	bests, func = list(), getCecBench(cec)
 	for i in range(runs):
-		task = Task(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(fnum))
+		task = Task(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(func, sr[0], sr[1], fnum))
 		algo = alg(seed=seed, task=task)
 		best = algo.run()
 		logger.info('%s %s' % (best[0], best[1]))
@@ -47,14 +60,16 @@ def simple_example(alg, fnum=1, runs=10, D=10, nFES=50000, nGEN=5000, seed=None,
 		savetxt('%s_%d_%d_p' % (algo.sName, fnum, D), bpos)
 		savetxt('%s_%d_%d_v' % (algo.sName, fnum, D), bval)
 
-def logging_example(alg, fnum=1, D=10, nFES=50000, nGEN=5000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **ukw):
-	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(fnum))
+def logging_example(alg, cec, fnum=1, D=10, nFES=50000, nGEN=5000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, wout=False, sr=[-100, 100], **kwu):
+	func = getCecBench(cec)
+	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(func, sr[0], sr[1], fnum))
 	algo = alg(seed=seed, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
 
-def plot_example(alg, fnum=1, D=10, nFES=50000, nGEN=5000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, **kwy):
-	task = TaskConvPlot(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(fnum))
+def plot_example(alg, cec, fnum=1, D=10, nFES=50000, nGEN=5000, seed=None, optType=OptimizationType.MINIMIZATION, optFunc=MinMB, wout=False, sr=[-100, 100], **kwu):
+	func = getCecBench(cec)
+	task = TaskConvPlot(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(func, sr[0], sr[1], fnum))
 	algo = alg(seed=seed, task=task)
 	best = algo.run()
 	logger.info('%s %s' % (best[0], best[1]))
