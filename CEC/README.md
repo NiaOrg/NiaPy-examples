@@ -9,8 +9,8 @@
 
 1. Install [NiaPy](https://github.com/NiaOrg/NiaPy)
 2. Build one of the CEC competitions. Example for `cec2014`:
-  1. `cd cec2014`
-  2. `make build`
+    1. `cd cec2014`
+    2. `make build`
 3. Now you should have a shared library. Now execute `cd ..`
 4. Execute `python run_cec.py -c 14`
 
