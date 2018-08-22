@@ -13,5 +13,5 @@ extensions = [
 
 setup(
     ext_modules=cythonize(extensions),
-    extra_compile_args=['-w', '-g', '-O3'],
+    extra_compile_args=["-w", '-g', '-O3'],
 )
