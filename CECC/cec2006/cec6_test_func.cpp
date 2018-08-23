@@ -1,5 +1,15 @@
 #include <math.h>
-#include ""
+#include "cec6_test_func.h"
+
+double runtest(double *x, int dim, int func_num) {
+	// TODO
+	return 0;
+}
+
+double* cec8_test_func(double *x, double *g, double *f, int nx, int nf, int ng, int nh) {
+	// TODO
+	return nullptr;
+}
 
 void g01 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh) {
   int j;
@@ -538,5 +548,3 @@ void g24 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, in
   g[0] = -2.0 * pow (x[0], 4.0) + 8.0 * pow (x[0], 3.0) - 8.0 * pow (x[0], 2.0) + x[1] - 2.0;
   g[1] = -4.0 * pow (x[0], 4.0) + 32.0 * pow (x[0], 3.0) - 88.0 * pow (x[0], 2.0) + 96.0 * x[0] + x[1] - 36.0;
 }
-
-
