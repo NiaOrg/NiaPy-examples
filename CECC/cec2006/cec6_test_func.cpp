@@ -1,32 +1,8 @@
-/*
-  Test function suite (last update:
-  Thomas Philip Runarsson (email: tpr@hi.is) 
-  Time-stamp: "2005-11-19 18:01:18 tpr"
-
-  for linux:
-  
-  gcc -c fcnsuite.c
-  ld -o fcnsuite.so -shared fcnsuite.o
-
-  for windows:
-
-  gcc -c fcnsuite.c -DWINDOWS
-  dllwrap -o fcnsuite.dll fcnsuite.o
-*/
-
-#ifdef WINDOWS
-#define DLLIMPORT __declspec (dllexport)
-#else
-#define DLLIMPORT
-#endif
-
 #include <math.h>
+#include ""
 
-DLLIMPORT void
-g01 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
-{
+void g01 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh) {
   int j;
-
   /* objective function */
   f[0] = 5.0 * (x[0] + x[1] + x[2] + x[3]) - 5.0 * (x[0] * x[0] + x[1] * x[1] + x[2] * x[2] + x[3] * x[3]);
   for (j = 4; j < 13; j++)
@@ -43,9 +19,7 @@ g01 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
   g[8] = -2.0 * x[7] - x[8] + x[11];
 }
 
-DLLIMPORT void
-g02 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
-{
+void g02 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh) {
   int j;
   double f1, f2, f3, g1, g2;
 
@@ -70,9 +44,7 @@ g02 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
   g[1] = g2 - 7.5 * ((double) nx);
 }
 
-DLLIMPORT void
-g03 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
-{
+void g03 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh) {
   int j;
   double f1, f2, f3 = sqrt ((double) nx);
 
@@ -90,9 +62,7 @@ g03 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
   h[0] = f2 - 1.0;
 }
 
-DLLIMPORT void
-g04 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
-{
+void g04 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh) {
   /* objective function */
   f[0] = 5.3578547 * x[2] * x[2] + 0.8356891 * x[0] * x[4] + 37.293239 * x[0] - 40792.141;
   /* constraints g<=0 */
@@ -104,9 +74,7 @@ g04 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
   g[5] = -9.300961 - 0.0047026 * x[2] * x[4] - 0.0012547 * x[0] * x[2] - 0.0019085 * x[2] * x[3] + 20.;
 }
 
-DLLIMPORT void
-g05 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
-{
+void g05 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh) {
   /* objective function */
   f[0] = 3.0 * x[0] + 0.000001 * pow (x[0], 3) + 2.0 * x[1] + (0.000002 / 3.0) * pow (x[1], 3);
   /* constraints h=0 => g=|h|-delta<=0 */
@@ -117,9 +85,7 @@ g05 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
   h[2] = 1000.0 * sin (x[3] - 0.25) + 1000.0 * sin (x[3] - x[2] - 0.25) + 1294.8;
 }
 
-DLLIMPORT void
-g06 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
-{
+void g06 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh) {
   /* objective function */
   f[0] = pow ((x[0] - 10.), 3) + pow ((x[1] - 20.), 3);
   /* constraints */
@@ -127,9 +93,7 @@ g06 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
   g[1] = (x[0] - 6.) * (x[0] - 6.) + (x[1] - 5.) * (x[1] - 5.) - 82.81;
 }
 
-DLLIMPORT void
-g07 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
-{
+void g07 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh) {
   /* objective function */
   f[0] =
     x[0] * x[0] + x[1] * x[1] + x[0] * x[1] - 14.0 * x[0] - 16.0 * x[1] + (x[2] - 10.0) * (x[2] - 10.0) + 4.0 * (x[3] -
@@ -148,9 +112,7 @@ g07 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
   g[7] = -3.0 * x[0] + 6.0 * x[1] + 12.0 * (x[8] - 8.0) * (x[8] - 8.0) - 7.0 * x[9];
 }
 
-DLLIMPORT void
-g08 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
-{
+void g08 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh) {
 
   double pi = 4.0 * atan (1.0);
 
@@ -162,9 +124,7 @@ g08 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
   g[1] = 1.0 - x[0] + (x[1] - 4.0) * (x[1] - 4.0);
 }
 
-DLLIMPORT void
-g09 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
-{
+void  g09 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh) {
   /* objective function */
   f[0] =
     (x[0] - 10.0) * (x[0] - 10.0) + 5.0 * (x[1] - 12.0) * (x[1] - 12.0) + pow (x[2],
@@ -178,9 +138,7 @@ g09 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
   g[3] = 4.0 * x[0] * x[0] + x[1] * x[1] - 3.0 * x[0] * x[1] + 2.0 * x[2] * x[2] + 5.0 * x[5] - 11.0 * x[6];
 }
 
-DLLIMPORT void
-g10 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
-{
+void g10 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh) {
   /* objective function */
   f[0] = x[0] + x[1] + x[2];
   /* constraints g<=0 */
@@ -192,18 +150,14 @@ g10 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
   g[5] = -x[2] * x[7] + 1250000.0 + x[2] * x[4] - 2500.0 * x[4];
 }
 
-DLLIMPORT void
-g11 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
-{
+void g11 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh) {
   /* objective function */
   f[0] = x[0] * x[0] + (x[1] - 1.0) * (x[1] - 1.0);
   /* constraints g<=0 */
   h[0] = x[1] - x[0] * x[0];
 }
 
-DLLIMPORT void
-g12 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
-{
+void g12 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh) {
   double gt;
   int i, j, k;
 
@@ -226,9 +180,7 @@ g12 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
     }
 }
 
-DLLIMPORT void
-g13 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
-{
+void g13 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh) {
   /* objective function */
   f[0] = exp (x[0] * x[1] * x[2] * x[3] * x[4]);
   /* constraints h(x) = 0 */
@@ -237,9 +189,7 @@ g13 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
   h[2] = pow (x[0], 3) + pow (x[1], 3) + 1.0;
 }
 
-DLLIMPORT void
-g14 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
-{
+void g14 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh) {
   int i;
   double sumlog = 0.0, sum = 0.0;
   double C[10] = { -6.089, -17.164, -34.054, -5.914, -24.721, -14.986, -24.100, -10.708, -26.662, -22.179 };
@@ -256,9 +206,7 @@ g14 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
   h[2] = x[2] + x[6] + x[7] + 2.0 * x[8] + x[9] - 1.0;
 }
 
-DLLIMPORT void
-g15 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
-{
+void g15 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh) {
   /* objective function */
   f[0] = 1000.0 - pow (x[0], 2.0) - 2.0 * x[1] * x[1] - x[2] * x[2] - x[0] * x[1] - x[0] * x[2];
   /* constraints h=0 */
@@ -266,9 +214,7 @@ g15 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
   h[1] = 8.0 * x[0] + 14.0 * x[1] + 7.0 * x[2] - 56.0; /* BUG FIXED was 8.0 * x[1] */
 }
 
-DLLIMPORT void
-g16 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
-{
+void g16 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh) {
   double x1, x2, x3, x4, x5;
   double C[17], Y[17];
 
@@ -357,9 +303,7 @@ g16 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
   g[37] = Y[16] - 12146108.0;
 }
 
-DLLIMPORT void
-g17 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
-{
+void g17 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh) {
   double f1, f2, x1, x2, x3, x4, x5, x6;
   double aux1, aux2, aux5, aux4;
 
@@ -415,9 +359,7 @@ g17 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
   h[3] = aux4;
 }
 
-DLLIMPORT void
-g18 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
-{
+void g18 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh) {
   /* objective function */
   f[0] = 0.5 * (x[0] * x[3] - x[1] * x[2] + x[2] * x[8] - x[4] * x[8] + x[4] * x[7] - x[5] * x[6]);
   f[0] = -f[0]; /* Max-->Min, Modified by Jane,Nov 22 2005 */
@@ -437,9 +379,7 @@ g18 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
   g[12] = -x[4] * x[7] + x[5] * x[6];
 }
 
-DLLIMPORT void
-g19 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
-{
+void g19 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh) {
   int i, j;
   double sum1 = 0.0, sum2 = 0.0, sum3 = 0.0;
   double A[10][5] = { -16.0, 2.0, 0.0, 1.0, 0.0,
@@ -494,9 +434,7 @@ g19 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
     }
 }
 
-DLLIMPORT void
-g20 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
-{
+void g20 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh) {
   double sum1, sum2, sumtotal;
   int i, j;
   double A[24] = { 0.0693, 0.0577, 0.05, 0.2, 0.26, 0.55, 0.06, 0.1, 0.12, 0.18, 0.1, 0.09, 0.0693, 0.0577, 0.05, 0.2, 0.26, 0.55, 0.06, 0.1, 0.12, 0.18, 0.1, 0.09 }; 
@@ -537,9 +475,7 @@ g20 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
     g[j] = (x[j + 3] + x[j + 15]) / (sumtotal + E[j]);
 }
 
-DLLIMPORT void
-g21 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
-{
+void g21 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh) {
   int i;
 
   /* objective function */
@@ -553,9 +489,7 @@ g21 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
   h[4] = -x[6] + log (-2.0 * x[3] + 700.0);
 }
 
-DLLIMPORT void
-g22 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
-{
+void g22 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh) {
   int i;
 
   /* objective function */
@@ -583,9 +517,7 @@ g22 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
   h[18] = x[8] - x[11] - 4.60517 * x[14] + x[14] * x[21] + 100.0;
 }
 
-DLLIMPORT void
-g23 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
-{
+void g23 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh) {
   int i;
 
   /* objective function */
@@ -599,9 +531,7 @@ g23 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
   h[3] = x[3] + x[6] - x[7];
 }
 
-DLLIMPORT void
-g24 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh)
-{
+void g24 (double *x, double *f, double *g, double *h, int nx, int nf, int ng, int nh) {
   /* objective function */
   f[0] = -x[0] - x[1];
   /* constraint function */
