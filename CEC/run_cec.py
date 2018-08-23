@@ -3,7 +3,7 @@ import sys
 
 import random
 import logging
-from numpy import asarray, savetxt
+from numpy import asarray, savetxt, set_printoptions
 from NiaPy import Runner
 from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType
 from cecargparser import getDictArgs
@@ -14,6 +14,8 @@ logger.setLevel('INFO')
 
 # For reproducive results
 random.seed(1234)
+# For output results printing
+set_printoptions(linewidth=10000000, formatter={'all': lambda x: str(x)})
 
 class MinMB(object):
 	def __init__(self, run_fun, Lower=-100, Upper=100, fnum=1):
