@@ -28,7 +28,7 @@ double* cec18_test_func(double *x, double *f, int nx, int mx,int func_num) {
 		if (nx==2&&((func_num>=17&&func_num<=22)||(func_num>=29&&func_num<=30))) printf("\nError: hf01,hf02,hf03,hf04,hf05,hf06,cf07&cf08 are NOT defined for D=2.\n");
 
 		/* Load Matrix M*/
-		sprintf(FileName, "cec2018/input_data/M_%d_D%d.txt", func_num,nx);
+		sprintf(FileName, "cec2018/input_data/M_%d_D%d.txt", func_num, nx);
 		fpt = fopen(FileName,"r");
 		if (fpt==NULL) printf("\n Error: Cannot open M matirx input file for reading \n");
 		if (func_num<20) {
