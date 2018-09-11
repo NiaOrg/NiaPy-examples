@@ -35,7 +35,7 @@ class MaxMB(MinMB):
 
 cdimsOne = [2, 10, 30, 50]
 cdimsTwo = [2, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-cdimsThree = [2, 10, 20, 30, 50]
+cdimsThree = [10, 30, 50, 100]
 cdimsFour = [10, 30]
 
 def getCecBench(cec, d):
@@ -49,27 +49,27 @@ def getCecBench(cec, d):
 	elif cec == 13:
 		sys.path.append('cec2013')
 		from cec2013 import run_fun
-		if d not in cdimsTwo: raise Exception('Dimension sould be in %s' % (cdimsOne))
+		if d not in cdimsTwo: raise Exception('Dimension sould be in %s' % (cdimsTwo))
 	elif cec == 14:
 		sys.path.append('cec2014')
 		from cec2014 import run_fun
-		if d not in cdimsThree: raise Exception('Dimension sould be in %s' % (cdimsOne))
+		if d not in cdimsThree: raise Exception('Dimension sould be in %s' % (cdimsThree))
 	elif cec == 15:
 		sys.path.append('cec2015')
 		from cec2015 import run_fun
-		if d not in cdimsFour: raise Exception('Dimension sould be in %s' % (cdimsOne))
+		if d not in cdimsFour: raise Exception('Dimension sould be in %s' % (cdimsFour))
 	elif cec == 16:
 		sys.path.append('cec2016')
 		from cec2016 import run_fun
-		if d not in dims: raise Exception('Dimension sould be in %s' % (cdimsFour))
+		if d not in cdimsOne: raise Exception('Dimension sould be in %s' % (cdimsOne))
 	elif cec == 17:
 		sys.path.append('cec2017')
 		from cec2017 import run_fun
-		if d not in cdimsThree: raise Exception('Dimension sould be in %s' % (cdimsOne))
+		if d not in cdimsThree: raise Exception('Dimension sould be in %s' % (cdimsThree))
 	elif cec == 18:
 		sys.path.append('cec2018')
 		from cec2018 import run_fun
-		if d not in cdimsThree: raise Exception('Dimension sould be in %s' % (cdimsOne))
+		if d not in cdimsThree: raise Exception('Dimension sould be in %s' % (cdimsThree))
 	return run_fun
 
 def getMaxFES(cec):
