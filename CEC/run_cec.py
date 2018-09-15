@@ -87,7 +87,7 @@ def simple_example(alg, cec, fnum=1, runs=10, D=10, nFES=50000, nGEN=5000, seed=
 		bests.append(best)
 	if wout:
 		bpos, bval = asarray([x[0] for x in bests]), asarray([x[1] for x in bests])
-		savetxt('%s_%d_%d_p' % (algo.Name[-1], fnum, D), bpos)
+		# savetxt('%s_%d_%d_p' % (algo.Name[-1], fnum, D), bpos)
 		savetxt('%s_%d_%d_v' % (algo.Name[-1], fnum, D), bval)
 
 def logging_example(alg, cec, fnum=1, D=10, nFES=50000, nGEN=5000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, wout=False, sr=[-100, 100], **kwu):
