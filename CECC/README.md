@@ -1,4 +1,4 @@
-# CEC Competitions on Real-Parameter Single Objective Optimization with Constraints
+# CEC Competitions on Constrained Real Parameter single objective optimization
 
 ## Requirements
 

@@ -4,6 +4,8 @@ This repository contains various examples of usage of the [NiaPy micro-framework
 Current list of examples:
 
 - [Optimization of KNN parameters](https://github.com/NiaOrg/NiaPy-examples/tree/master/optimize_KNN_parameters) 
+- [CEC Competitions on Real-Parameter Single Objective Optimization](https://github.com/NiaOrg/NiaPy-examples/tree/master/CEC) 
+- [CEC Competitions on Constrained Real Parameter single objective optimization](https://github.com/NiaOrg/NiaPy-examples/tree/master/CECC)
 
 ## Contributing
 
