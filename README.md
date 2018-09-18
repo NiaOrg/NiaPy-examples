@@ -1,5 +1,5 @@
 # NiaPy examples
-This repository is containing various examples of usage of the [NiaPy micro-framework](https://github.com/NiaOrg/NiaPy). Each example is placed in a separate folder inside this repository with its own instructions on how to run it. 
+This repository contains various examples of usage of the [NiaPy micro-framework](https://github.com/NiaOrg/NiaPy). Each example is placed in a separate folder inside this repository with its own instructions on how to run it. 
 
 Current list of examples:
 
