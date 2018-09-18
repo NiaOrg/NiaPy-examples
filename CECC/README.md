@@ -7,26 +7,24 @@
 
 ## Installation
 
-1. Install [NiaPy](https://github.com/NiaOrg/NiaPy)
-2. Build one of the CEC competitions. Example for `cec2014`:
-    1. `cd cec2014`
-    2. `make build`
-3. Now you should have a shared library. Now execute `cd ..`
-4. Execute `python run_cec.py -c 14`
-
-If every thing ok you sould see the output of function values and coordinates for a simple run.
+1. Install [NiaPy](https://github.com/NiaOrg/NiaPy).
+2. Clone or download [NiaPy-examples](https://github.com/NiaOrg/NiaPy-examples).
+3. Navigate to one of the CEC competitions folders, e.g. to `cec2014` by running `cd cec2014`.
+4. Build the library by running `make build`.
+5. Shared library should be installed.
+6. For a simple run, navigate `cd ..` and run `python run_cec.py -c 14`.
+7. If build has been successful, simple run should output function values and coordinates.
 
 ## Program parameters
 
-Our program has default command line interface swiches from NiaPy
-Our example has next switches you can set in command line interface:
-- `-c` or `--cec`: Set the benchmark competition to use. Options: `13, 14, 15, 17, 18`.
-- `-f` or `--fnum`: Set the function number you want to use. Options varay by the benchmark used.
-- `-sr` or `--srange`: Set the upper and lower limit of search space for selected function. Options: negative in positive real numbers where is the first number lower than second number.
-- `-d` or `--dim`: Set the number of dimensions of the selected function. Options: `10, 30, 50, 100`.
-- `-nr` or `--nFESreduc`: Set the number of evaluations reduction factor. Options: `0.01, 0.02, 0.03, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0`.
-- `-rn` or `--rnum`: Set the number of runs per selected function. Option all positve full numbers.
-- `-o` or `--wout`: Set to true if you want to write generated data to file. Options: `True` if in `['true', 'True', 'TRUE', 'T', 'yes', 'Yes', 'YES', 'Y']` else `False`
+Following command line program parameters are applicable for [NiaPy-examples](https://github.com/NiaOrg/NiaPy-examples):
+- `-c` or `--cec`: Set the year of CEC competition, options: `8, 13, 14, 15, 17, 18`, e.g. `-c 14`.
+- `-f` or `--fnum`: Set the function number, options: unsigned integers, vary by the benchmark used, e.g. `-f 12`.
+- `-sr` or `--srange`: Set the lower and upper limit of search space for selected function, options: positive and negative real numbers (first number lower than the second).
+- `-d` or `--dim`: Set the number of dimensions, options: `10, 30, 50, 100`, e.g. `-d 10`.
+- `-nr` or `--nFESreduc`: Set the number of evaluations reduction factor, options: `0.01, 0.02, 0.03, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0`.
+- `-rn` or `--rnum`: Set the number of runs per selected function, options: unsigned integers.
+- `-o` or `--wout`: Set the write generation of data to external file, options: set `True` by options `['true', 'True', 'TRUE', 'T', 'yes', 'Yes', 'YES', 'Y']`, if write generation desired, or set `False` otherwise.
 
 ## Run example
 
