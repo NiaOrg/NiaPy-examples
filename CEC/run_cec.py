@@ -70,6 +70,10 @@ def getCecBench(cec, d):
 		sys.path.append('cec2018')
 		from cec2018 import run_fun
 		if d not in cdimsThree: raise Exception('Dimension sould be in %s' % (cdimsThree))
+	elif cec == 19:
+		sys.path.append('cec2019')
+		from cec2019 import run_fun
+		if d not in cdimsThree: raise Exception('Dimension sould be in %s' % (cdimsThree))
 	return run_fun
 
 def getMaxFES(cec):
