@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import cross_validate
 from NiaPy.algorithms.modified import HybridBatAlgorithm
-import pygal 
+import pygal
 
 KNN_WEIGHT_FUNCTIONS = [
     'uniform',
@@ -36,13 +36,13 @@ def swap_algorithm(val):
 
 # map from real number [0, 1] to integer ranging [10, 50]
 def swap_leaf_size(val):
-    return int(val * 10 + 40)
+    return int(val * 40 + 10)
 
 class KNNBreastCancerBenchmark(object):
     def __init__(self):
         self.Lower = 0
         self.Upper = 1
-    
+
     def function(self):
         # our definition of fitness function
         def evaluate(D, solution):
@@ -67,7 +67,7 @@ class KNNBreastCancerClassifier(object):
         dataset = datasets.load_breast_cancer()
         self.X = dataset.data
         self.y = dataset.target
-        
+
         self.X_search, self.X_validate, self.y_search, self.y_validate = train_test_split(self.X, self.y, test_size=0.8, random_state=self.seed)
         self.X_search_train, self.X_search_test, self.y_search_train, self.y_search_test = train_test_split(self.X_search, self.y_search, test_size=0.8, random_state=self.seed)
 
