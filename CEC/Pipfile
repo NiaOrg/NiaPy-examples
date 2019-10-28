@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[requires]
+python_version = '3.7'
+
+[packages]
+pipfile = "*"
+numpy = ">=1.16.3"
+scipy = ">=1.2.1"
+matplotlib = ">=3.0.3"
+pandas = ">=0.24.2"
+pydot = ">=1.4.1"
+graphviz = ">=0.10.1"
+Cython = ">=0.29.7"
+scikit-learn = ">=0.21.3"
+niapy = {path = "./../../NiaPy/dist/NiaPy-feature-cp37-cp37m-linux_x86_64.whl"}

@@ -3,9 +3,10 @@ import sys
 
 import random
 import logging
-from numpy import asarray, savetxt, set_printoptions
+import pandas as pd
+from numpy import asarray, savetxt, set_printoptions, inf
 from NiaPy import Runner
-from NiaPy.util import Task, TaskConvPrint, TaskConvPlot, OptimizationType
+from NiaPy.util import StoppingTask, TaskConvPrint, TaskConvPlot, TaskConvSave, OptimizationType
 from cecargparser import getDictArgs
 
 logging.basicConfig()
@@ -23,20 +24,18 @@ class MinMB(object):
 		self.fnum = fnum
 		self.run_fun = run_fun
 
-	def function(self):
-		def evaluate(D, sol): return self.run_fun(asarray(sol), self.fnum)
-		return evaluate
+	def function(self): return lambda x: self.run_fun(asarray(x), self.fnum)
 
 class MaxMB(MinMB):
 	def function(self):
 		f = MinMB.function(self)
-		def e(D, sol): return -f(D, sol)
-		return e
+		return lambda x: -f(x)
 
 cdimsOne = [2, 10, 30, 50]
 cdimsTwo = [2, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 cdimsThree = [10, 30, 50, 100]
 cdimsFour = [10, 30]
+cdimsFive = [9, 10, 16, 18]
 
 def getCecBench(cec, d):
 	if cec == 5:
@@ -73,20 +72,21 @@ def getCecBench(cec, d):
 	elif cec == 19:
 		sys.path.append('cec2019')
 		from cec2019 import run_fun
-		if d not in cdimsThree: raise Exception('Dimension sould be in %s' % (cdimsThree))
+		if d not in cdimsFive: raise Exception('Dimension sould be in %s' % (cdimsThree))
 	return run_fun
 
 def getMaxFES(cec):
 	if cec == 8: return 5000
-	if cec in [5, 13, 14, 15, 17, 18]: return 10000
+	elif cec in [5, 13, 14, 15, 17, 18]: return 10000
+	elif cec == 19: return inf
 	else: return 10000
 
 def simple_example(alg, cec, fnum=1, runs=10, D=10, nFES=50000, nGEN=5000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, wout=False, sr=[-100, 100], **kwu):
 	bests, func = list(), getCecBench(cec, D)
 	for i in range(runs):
-		task = Task(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(func, sr[0], sr[1], fnum))
-		algo = alg(seed=seed[i % len(seed)], task=task)
-		best = algo.run()
+		task = StoppingTask(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(func, sr[0], sr[1], fnum))
+		algo = alg(seed=seed[i % len(seed)])
+		best = algo.run(task)
 		logger.info('%s %s' % (best[0], best[1]))
 		bests.append(best)
 	if wout:
@@ -94,18 +94,38 @@ def simple_example(alg, cec, fnum=1, runs=10, D=10, nFES=50000, nGEN=5000, seed=
 		savetxt('%s_%d_%d_p' % (algo.Name[-1], fnum, D), bpos)
 		savetxt('%s_%d_%d_v' % (algo.Name[-1], fnum, D), bval)
 
-def logging_example(alg, cec, fnum=1, D=10, nFES=50000, nGEN=5000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, wout=False, sr=[-100, 100], **kwu):
+def logging_example(alg, cec, fnum=1, D=10, nFES=50000, nGEN=5000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, wout=False, sr=[-8192, 8192], **kwu):
 	func = getCecBench(cec, D)
 	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(func, sr[0], sr[1], fnum))
-	algo = alg(seed=seed[0], task=task)
-	best = algo.run()
+	algo = alg(seed=seed[0], NP=100, vMin=-16000, vMax=16000, w=0.5)
+	best = algo.run(task)
 	logger.info('%s %s' % (best[0], best[1]))
+
+def save_example(alg, cec, fnum=1, runs=10, D=10, nFES=50000, nGEN=5000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, wout=True, sr=[-100, 100], **kwu):
+	bests, conv_it, conv_f, func = list(), list(), list(), getCecBench(cec, D)
+	for i in range(runs):
+		task = TaskConvSave(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(func, sr[0], sr[1], fnum))
+		algo = alg(seed=seed[i % len(seed)])
+		best = algo.run(task)
+		logger.info('%s %s' % (best[0], best[1]))
+		bests.append(best)
+		conv_it.append(task.evals)
+		conv_f.append(task.x_f_vals)
+	if wout:
+		bpos, bval = asarray([x[0] for x in bests]), asarray([x[1] for x in bests])
+		savetxt('%s_%d_%d_p' % (algo.Name[-1], fnum, D), bpos)
+		savetxt('%s_%d_%d_v' % (algo.Name[-1], fnum, D), bval)
+		inds = []
+		for i in range(runs): inds.append('evals'), inds.append('funvl')
+		data = []
+		for i in range(runs): data.append(conv_it[i]), data.append(conv_f[i])
+		pd.DataFrame(data, index=inds).T.to_csv('%s_%d_%d.csv' % (algo.Name[-1], fnum, D), sep=',', index=False)
 
 def plot_example(alg, cec, fnum=1, D=10, nFES=50000, nGEN=5000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, wout=False, sr=[-100, 100], **kwu):
 	func = getCecBench(cec, D)
 	task = TaskConvPlot(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(func, sr[0], sr[1], fnum))
-	algo = alg(seed=seed[0], task=task)
-	best = algo.run()
+	algo = alg(seed=seed[0])
+	best = algo.run(task)
 	logger.info('%s %s' % (best[0], best[1]))
 	input('Press [enter] to continue')
 
@@ -116,12 +136,14 @@ def getOptType(otype):
 
 if __name__ == '__main__':
 	pargs = getDictArgs(sys.argv[1:])
-	pargs['nFES'] = round(pargs['D'] * getMaxFES(pargs['cec']) * pargs['reduc'])
+	fes = getMaxFES(pargs['cec']) if not inf else sys.maxsize
+	pargs['nFES'] = round(pargs['D'] * fes * pargs['reduc'])
 	algo = Runner.getAlgorithm(pargs['algo'])
 	optFunc = getOptType(pargs['optType'])
 	if not pargs['runType']: simple_example(algo, optFunc=optFunc, **pargs)
 	elif pargs['runType'] == 'log': logging_example(algo, optFunc=optFunc, **pargs)
 	elif pargs['runType'] == 'plot': plot_example(algo, optFunc=optFunc, **pargs)
+	elif pargs['runType'] == 'save': save_example(algo, optFunc=optFunc, **pargs)
 	else: simple_example(algo, optFunc=optFunc, **pargs)
 
 # vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3

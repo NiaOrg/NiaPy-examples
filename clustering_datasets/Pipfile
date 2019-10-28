@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[requires]
+python_version = '3.7'
+
+[packages]
+pipfile = "*"
+wheel = ">=0.33.4"
+jupyterlab = ">=0.35.5"
+ipykernel = ">=5.1.0"
+numpy = ">=1.16.3"
+scipy = ">=1.2.1"
+matplotlib = ">=3.0.3"
+pandas = ">=0.24.2"
+scikit-learn = ">=0.21.2"
+ipywidgets = ">=7.4.2"
+ipympl = ">=0.2.1"
+jupyterthemes = ">=0.20.0"
+seaborn = ">=0.9.0" 
+niapy = {path = "./../../NiaPy/dist/NiaPy-2.0.0rc4-cp37-cp37m-linux_x86_64.whl"}
