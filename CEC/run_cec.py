@@ -2,11 +2,14 @@
 import sys
 
 import random
+
 import logging
 import pandas as pd
 from numpy import asarray, savetxt, set_printoptions, inf
-from NiaPy import Runner
-from NiaPy.util import StoppingTask, TaskConvPrint, TaskConvPlot, TaskConvSave, OptimizationType
+
+from NiaPy.algorithms import AlgorithmUtility
+from NiaPy.benchmarks import Benchmark
+from NiaPy.task import StoppingTask, OptimizationType
 from cecargparser import getDictArgs
 
 logging.basicConfig()
@@ -18,9 +21,9 @@ random.seed(1234)
 # For output results printing
 set_printoptions(linewidth=10000000, formatter={'all': lambda x: str(x)})
 
-class MinMB(object):
+class MinMB(Benchmark):
 	def __init__(self, run_fun, Lower=-100, Upper=100, fnum=1):
-		self.Lower, self.Upper = Lower, Upper
+		Benchmark.__init__(self, Lower=Lower, Upper=Upper)
 		self.fnum = fnum
 		self.run_fun = run_fun
 
@@ -96,7 +99,7 @@ def simple_example(alg, cec, fnum=1, runs=10, D=10, nFES=50000, nGEN=5000, seed=
 
 def logging_example(alg, cec, fnum=1, D=10, nFES=50000, nGEN=5000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, wout=False, sr=[-8192, 8192], **kwu):
 	func = getCecBench(cec, D)
-	task = TaskConvPrint(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(func, sr[0], sr[1], fnum))
+	task = StoppingTask(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(func, sr[0], sr[1], fnum), logger=True)
 	algo = alg(seed=seed[0], NP=100, vMin=-16000, vMax=16000, w=0.5)
 	best = algo.run(task)
 	logger.info('%s %s' % (best[0], best[1]))
@@ -104,7 +107,7 @@ def logging_example(alg, cec, fnum=1, D=10, nFES=50000, nGEN=5000, seed=[None], 
 def save_example(alg, cec, fnum=1, runs=10, D=10, nFES=50000, nGEN=5000, seed=[None], optType=OptimizationType.MINIMIZATION, optFunc=MinMB, wout=True, sr=[-100, 100], **kwu):
 	bests, conv_it, conv_f, func = list(), list(), list(), getCecBench(cec, D)
 	for i in range(runs):
-		task = TaskConvSave(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(func, sr[0], sr[1], fnum))
+		task = StoppingTask(D=D, nFES=nFES, nGEN=nGEN, optType=optType, benchmark=optFunc(func, sr[0], sr[1], fnum))
 		algo = alg(seed=seed[i % len(seed)])
 		best = algo.run(task)
 		logger.info('%s %s' % (best[0], best[1]))
@@ -138,7 +141,8 @@ if __name__ == '__main__':
 	pargs = getDictArgs(sys.argv[1:])
 	fes = getMaxFES(pargs['cec']) if not inf else sys.maxsize
 	pargs['nFES'] = round(pargs['D'] * fes * pargs['reduc'])
-	algo = Runner.getAlgorithm(pargs['algo'])
+	algUtl = AlgorithmUtility()
+	algo = algUtl.get_algorithm(pargs['algo'])
 	optFunc = getOptType(pargs['optType'])
 	if not pargs['runType']: simple_example(algo, optFunc=optFunc, **pargs)
 	elif pargs['runType'] == 'log': logging_example(algo, optFunc=optFunc, **pargs)
