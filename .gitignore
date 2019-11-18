@@ -108,5 +108,7 @@ venv.bak/
 
 .vscode/
 
+**/Pipfile.lock
+
 
 # End of https://www.gitignore.io/api/python
