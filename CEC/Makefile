@@ -6,6 +6,6 @@ install: Pipfile
 lab:
 	pipenv run jupyter lab
 
-clean: Pipfile.lock
+uninstall: Pipfile.lock
 	pipenv --rm
 	rm Pipfile.lock

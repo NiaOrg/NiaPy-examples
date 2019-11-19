@@ -27,12 +27,12 @@ class MinMB(Benchmark):
 		self.fnum = fnum
 		self.run_fun = run_fun
 
-	def function(self): return lambda x: self.run_fun(asarray(x), self.fnum)
+	def function(self): return lambda d, x: self.run_fun(asarray(x), self.fnum)
 
 class MaxMB(MinMB):
 	def function(self):
 		f = MinMB.function(self)
-		return lambda x: -f(x)
+		return lambda d, x: -f(d, x)
 
 cdimsOne = [2, 10, 30, 50]
 cdimsTwo = [2, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
