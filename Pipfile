@@ -17,4 +17,4 @@ graphviz = ">=0.10.1"
 Cython = ">=0.29.7"
 scikit-learn = ">=0.21.3"
 jupyterlab = "*"
-niapy = {path = "../../NiaPy/dist/NiaPy-2.0.0rc10-py3-none-any.whl"}
+niapy = {path = "../NiaPy/dist/NiaPy-2.0.0rc10-py3-none-any.whl"}
