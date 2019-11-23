@@ -6,6 +6,6 @@ build: cec15_test_func.cpp cec15_test_func.h
 	$(PYTHON) setup.py build_ext --inplace
 
 clean:
-	rm cec2015.cpp
-	rm -r build
-	rm *.so
+	-rm cec2015.cpp
+	-rm -r build
+	-rm *.so
