@@ -9,6 +9,6 @@ lab:
 shell:
 	pipenv shell
 
-uninstall: Pipfile.lock
+uninstall:
 	pipenv --rm
-	rm Pipfile.lock
+	-rm Pipfile.lock
