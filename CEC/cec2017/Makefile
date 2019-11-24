@@ -1,11 +1,7 @@
-PYTHON=python
-PVERSION=$(shell $(PYTHON) -c "import sys; print('%d.%d.%d' % (sys.version_info.major, sys.version_info.minor, sys.version_info.micro))")
-PVERSIONS=$(shell $(PYTHON) -c "import sys; print('%d%d' % (sys.version_info.major, sys.version_info.minor))")
+CC:=g++
 
-build: cec17_test_func.cpp cec17_test_func.h cec2017.pyx
-	$(PYTHON) setup.py build_ext --inplace
+build: cec17_test_func.cpp cec17_test_func.h
+	$(CC) -O3 -fPIC -shared -o cec2017.so cec17_test_func.cpp cec17_test_func.h
 
 clean:
-	-rm cec2017.cpp
-	-rm -r build
 	-rm *.so
