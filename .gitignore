@@ -10,7 +10,8 @@ include/
 *$py.class
 
 # C extensions
-*.so
+**/*.so
+**/*.o
 
 # Distribution / packaging
 .Python
@@ -52,8 +53,8 @@ coverage.xml
 .hypothesis/
 
 # Translations
-*.mo
-*.pot
+**/*.mo
+**/*.pot
 
 # Django stuff:
 *.log
@@ -109,6 +110,5 @@ venv.bak/
 .vscode/
 
 **/Pipfile.lock
-
 
 # End of https://www.gitignore.io/api/python
