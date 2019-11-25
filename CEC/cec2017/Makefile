@@ -5,5 +5,6 @@ build: cec17_test_func.c
 	${CC} -Wall -fPIC ${CC_FLAGS} -c cec17_test_func.c
 	${CC} -shared -W -o cec2017.so cec17_test_func.o -lm
 
-clean: cec2017.so
+clean: cec17_test_func.o cec2017.so
+	rm cec17_test_func.o
 	rm cec2017.so
