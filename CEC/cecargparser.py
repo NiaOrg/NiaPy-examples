@@ -1,7 +1,7 @@
 import sys
 from NiaPy.util import MakeArgParser
 
-ccecs = [8, 13, 14, 15, 16, 17, 18]
+ccecs = [8, 13, 14, 15, 16, 17, 18, 19]
 creduces = [0.01, 0.02, 0.03, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
 
 def positiveInt(x): return abs(int(x))
@@ -16,7 +16,7 @@ def MakeArgParserCEC():
 	parser.add_argument('-d', '--dim', dest='D', default=10, type=positiveInt)
 	parser.add_argument('-nr', '--nFESreduc', dest='reduc', default=creduces[-1], choices=creduces, type=float)
 	parser.add_argument('-rn', '--rnum', dest='runs', default=51, type=positiveInt)
-	parser.add_argument('-o', '--wout', dest='wout', default=False, type=str2bool)
+	parser.add_argument('-o', '--wout', dest='wout', default=True, type=str2bool)
 	return parser
 
 def getArgs(argv):

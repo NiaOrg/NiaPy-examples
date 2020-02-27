@@ -1,0 +1,18 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[requires]
+python_version = '3.7'
+
+[packages]
+pipfile = "*"
+jupyterlab = ">=0.35.5"
+ipykernel = ">=5.1.0"
+numpy = ">=1.16.3"
+scipy = ">=1.2.1"
+matplotlib = ">=3.0.3"
+pandas = ">=0.24.2"
+ipympl = ">=0.2.1"
+jupyterthemes = ">=0.20.0"

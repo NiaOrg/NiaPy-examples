@@ -1,12 +1,10 @@
-PYTHON=python
-PVERSION=$(shell $(PYTHON) -c "import sys; print('%d.%d.%d' % (sys.version_info.major, sys.version_info.minor, sys.version_info.micro))")
-PVERSIONS=$(shell $(PYTHON) -c "import sys; print('%d%d' % (sys.version_info.major, sys.version_info.minor))")
+CC:=gcc
+CC_FLAGS:=-std=c99 -O3 -march=native
 
-build: cec17_test_func.cpp cec17_test_func.h cec2017.pyx
-	$(PYTHON) setup.py build_ext -i
-	cp build/lib.linux-x86_64-$(PVERSION)/cec2017.cpython-$(PVERSIONS)m-x86_64-linux-gnu.so .
+build: cec17_test_func.c
+	${CC} -Wall -fPIC ${CC_FLAGS} -c cec17_test_func.c
+	${CC} -shared -W -o cec2017.so cec17_test_func.o -lm
 
-clean:
-	rm cec2017.cpp
-	rm -r build
-	rm *.so
+clean: cec17_test_func.o cec2017.so
+	rm cec17_test_func.o
+	rm cec2017.so
