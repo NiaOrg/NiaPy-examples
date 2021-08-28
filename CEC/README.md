@@ -22,7 +22,7 @@ Following command line program parameters are applicable for [NiaPy-examples](ht
 - `-c` or `--cec`: Set the year of CEC competition, options: `8, 13, 14, 15, 17, 18`, e.g. `-c 18`.
 - `-f` or `--fnum`: Set the function number, options: unsigned integers, vary by the benchmark used, e.g. `-f 12`.
 - `-sr` or `--srange`: Set the lower and upper limit of search space for selected function, options: positive and negative real numbers (first number lower than the second).
-- `-d` or `--dim`: Set the number of dimensions, options: `10, 30, 50, 100`, e.g. `-d 10`.
+- `-d` or `--dimension`: Set the number of dimensions, options: `10, 30, 50, 100`, e.g. `-d 10`.
 - `-nr` or `--nFESreduc`: Set the number of evaluations reduction factor, options: `0.01, 0.02, 0.03, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0`.
 - `-rn` or `--rnum`: Set the number of runs per selected function, options: unsigned integers.
 - `-o` or `--wout`: Set the write generation of data to external file, options: set `True` by options `['true', 'True', 'TRUE', 'T', 'yes', 'Yes', 'YES', 'Y']`, if write generation desired, or set `False` otherwise.
