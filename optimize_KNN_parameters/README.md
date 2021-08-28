@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- [Python](https://www.python.org/downloads/) >= 3.6 (should also work with version >= 2.7)
+- [Python](https://www.python.org/downloads/) >= 3.6
 - [pip](https://pip.pypa.io/en/stable/installing/)
 - pipenv: ```pip install pipenv```
 
