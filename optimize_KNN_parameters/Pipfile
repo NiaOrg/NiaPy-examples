@@ -1,24 +1,13 @@
 [[source]]
-
-url = "https://pypi.python.org/simple"
+url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [packages]
-
-niapy = "*"
-numpy = "*"
+niapy = "==2.0.0rc18"
 scikit-learn = "*"
-pygal = "*"
-lxml = "*"
-cairosvg = "*"
-
 
 [dev-packages]
 
-
-
 [requires]
-
-python_version = "3.6"
+python_version = "3"

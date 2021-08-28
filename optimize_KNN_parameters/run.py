@@ -1,117 +1,75 @@
-import numpy as np
-from sklearn import datasets
+import matplotlib.pyplot as plt
+
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.model_selection import StratifiedKFold
-from sklearn.model_selection import cross_validate
-from NiaPy.algorithms.modified import HybridBatAlgorithm
-import pygal
 
-KNN_WEIGHT_FUNCTIONS = [
-    'uniform',
-    'distance'
-]
-
-KNN_ALGORITHMS = [
-    'ball_tree',
-    'kd_tree',
-    'brute'
-]
-
-# map from real number [0, 1] to integer ranging [5, 15]
-def swap_n_neighbors(val):
-    return int(val * 10 + 5)
-
-# map from real number [0, 1] to integer ranging [0, 1]
-def swap_weights(val):
-    if val > 0.5:
-        return 1
-    return 0
-
-# map from real number [0, 1] to integer ranging [1, 3]
-def swap_algorithm(val):
-    if val == 1:
-        return 3
-    return int(val * 3 + 1)
-
-# map from real number [0, 1] to integer ranging [10, 50]
-def swap_leaf_size(val):
-    return int(val * 40 + 10)
-
-class KNNBreastCancerBenchmark(object):
-    def __init__(self):
-        self.Lower = 0
-        self.Upper = 1
-
-    def function(self):
-        # our definition of fitness function
-        def evaluate(D, solution):
-            n_neighbors = swap_n_neighbors(solution[0])
-            weights = KNN_WEIGHT_FUNCTIONS[(swap_weights(solution[1]) - 1)]
-            algorithm = KNN_ALGORITHMS[(swap_algorithm(solution[2]) - 1)]
-            leaf_size = swap_leaf_size(solution[3])
-
-            fitness = 1 - KNNBreastCancerClassifier(1234).evaluate(n_neighbors, weights, algorithm, leaf_size)
-            scores.append([fitness, n_neighbors, weights, algorithm, leaf_size])
-
-            return fitness
-        return evaluate
-
-class KNNBreastCancerClassifier(object):
-    def __init__(self, seed=1234):
-        self.seed = seed
-        self.ten_fold_scores = {}
-        self.default_ten_fold_scores = {}
-        np.random.seed(self.seed)
-
-        dataset = datasets.load_breast_cancer()
-        self.X = dataset.data
-        self.y = dataset.target
-
-        self.X_search, self.X_validate, self.y_search, self.y_validate = train_test_split(self.X, self.y, test_size=0.8, random_state=self.seed)
-        self.X_search_train, self.X_search_test, self.y_search_train, self.y_search_test = train_test_split(self.X_search, self.y_search, test_size=0.8, random_state=self.seed)
+from niapy.problems import Problem
+from niapy.task import Task, OptimizationType
+from niapy.algorithms.modified import HybridBatAlgorithm
 
 
-    def evaluate(self, n_neighbors, weights, algorithm, leaf_size):
-        model = KNeighborsClassifier(n_neighbors=n_neighbors, weights=weights, algorithm=algorithm, leaf_size=leaf_size)
-        model.fit(self.X_search_train, self.y_search_train)
-        return model.score(self.X_search_test, self.y_search_test)
+def get_hyperparameters(x):
+    """Get hyperparameters for solution `x`."""
+    algorithms = ('ball_tree', 'kd_tree', 'brute')
+    n_neighbors = int(5 + x[0] * 10)
+    weights = 'uniform' if x[1] < 0.5 else 'distance'
+    algorithm = algorithms[int(x[2] * 2)]
+    leaf_size = int(10 + x[3] * 40)
 
-    def run_10_fold(self, solution=None):
-        if solution is None:
-            estimator = KNeighborsClassifier()
-            kfold = StratifiedKFold(n_splits=10, shuffle=True, random_state=self.seed)
-            self.default_ten_fold_scores = cross_validate(estimator, self.X, self.y, cv=kfold, scoring=['accuracy'])
-        else:
-            estimator = KNeighborsClassifier(n_neighbors=solution[1], weights=solution[2], algorithm=solution[3], leaf_size=solution[4])
-            kfold = StratifiedKFold(n_splits=10, shuffle=True, random_state=self.seed)
-            self.ten_fold_scores = cross_validate(estimator, self.X_validate, self.y_validate, cv=kfold, scoring=['accuracy'])
+    params =  {
+        'n_neighbors': n_neighbors,
+        'weights': weights,
+        'algorithm': algorithm,
+        'leaf_size': leaf_size
+    }
+    return params
 
 
-scores = []
-algorithm = HybridBatAlgorithm(4, 40, 100, 0.9, 0.1, 0.001, 0.9, 0.0, 2.0, KNNBreastCancerBenchmark())
-best = algorithm.run()
+def get_classifier(x):
+    """Get classifier from solution `x`."""
+    params = get_hyperparameters(x)
+    return KNeighborsClassifier(**params)
 
-print('Optimal KNN parameters are:')
-best_solution = []
 
-for score in scores:
-    if score[0] == best:
-        best_solution = score
+class KNNHyperparameterOptimization(Problem):
+    def __init__(self, X_train, X_test, y_train, y_test):
+        super().__init__(dimension=4, lower=0, upper=1)
+        self.X_train = X_train
+        self.X_test = X_test
+        self.y_train = y_train
+        self.y_test = y_test
 
-print(best_solution)
+    def _evaluate(self, x):
+        model = get_classifier(x)
+        model.fit(self.X_train, self.y_train)
+        return model.score(self.X_test, self.y_test)
 
-model = KNNBreastCancerClassifier()
-model.run_10_fold(solution=best_solution)
-model.run_10_fold()
 
-print('best model mean test accuracy: ' + str(np.mean(model.ten_fold_scores['test_accuracy'])))
-print('default model mean test accuracy: ' + str(np.mean(model.default_ten_fold_scores['test_accuracy'])))
+X, y = load_breast_cancer(return_X_y=True)
 
-box_plot = pygal.Box(width=800, height=600, range=(0.8, 0.99))
-box_plot.zero = 0.9
-box_plot.title = '10-fold cross-validation accuracies'
-box_plot.add('Best model', model.ten_fold_scores['test_accuracy'])
-box_plot.add('Default model', model.default_ten_fold_scores['test_accuracy'])
+X_search, X_validate, y_search, y_validate = train_test_split(X, y, test_size=0.8, random_state=1234)
+X_search_train, X_search_test, y_search_train, y_search_test = train_test_split(X_search, y_search, test_size=0.8, random_state=1234)
 
-box_plot.render_to_png('chart.png')
+problem = KNNHyperparameterOptimization(X_search_train, X_search_test, y_search_train, y_search_test)
+task = Task(problem, max_evals=100, optimization_type=OptimizationType.MAXIMIZATION)
+algorithm = HybridBatAlgorithm(population_size=40, differential_weight=0.8)
+
+best_params, best_accuracy = algorithm.run(task)
+
+print('Best parameters:', get_hyperparameters(best_params))
+
+best_model = get_classifier(best_params)
+default_model = KNeighborsClassifier()
+
+default_scores = cross_val_score(default_model, X, y, cv=10, n_jobs=-1)
+best_scores = cross_val_score(best_model, X_validate, y_validate, cv=10, n_jobs=-1)
+
+print('default model mean accuracy:', default_scores.mean())
+print('Best model mean accuracy:', best_scores.mean())
+
+plt.boxplot([best_scores, default_scores], vert=True)
+plt.xticks(ticks=[1, 2], labels=['Best', 'Default'])
+plt.title('10-fold cross-validation accuracies')
+
+plt.savefig('chart.png')
