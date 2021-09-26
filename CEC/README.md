@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- [Python](https://www.python.org/downloads/) >= 3.6 (should also work with version >= 2.7)
+- [Python](https://www.python.org/downloads/) >= 3.6
 - [Cython](https://cython.org/)
 - [NiaPy](https://github.com/NiaOrg/NiaPy)
 
