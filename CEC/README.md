@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- [Python](https://www.python.org/downloads/) >= 3.6 (should also work with version >= 2.7)
+- [Python](https://www.python.org/downloads/) >= 3.6
 - [Cython](https://cython.org/)
 - [NiaPy](https://github.com/NiaOrg/NiaPy)
 
@@ -13,23 +13,31 @@
 3. Navigate to one of the CEC competitions folders, e.g. to `cec2018` by running `cd cec2018`.
 4. Build the library by running `make build`.
 5. Shared library should be installed.
-6. For a simple run, navigate `cd ..` and run `python run_cec.py -c 18`.
+6. For a simple run, navigate `cd ..` and run `python run_cec.py -a BatAlgorithm -c 18 -r log`.
 7. If build has been successful, simple run should output function values and coordinates.
 
 ## Program parameters
 
 Following command line program parameters are applicable for [NiaPy-examples](https://github.com/NiaOrg/NiaPy-examples):
+- `-a` or `--algorithm`: Name of algorithm to use (name of the class of the algorithm in NiaPy).
+- `-n` or  `--population-size`: Number of individuals in population.
+- `--seed`: Set the starting seed of algorithm run. If multiple runs, user can provide list of ints, where each int usd use at new run. Default values is `None`.
 - `-c` or `--cec`: Set the year of CEC competition, options: `8, 13, 14, 15, 17, 18`, e.g. `-c 18`.
 - `-f` or `--fnum`: Set the function number, options: unsigned integers, vary by the benchmark used, e.g. `-f 12`.
 - `-sr` or `--srange`: Set the lower and upper limit of search space for selected function, options: positive and negative real numbers (first number lower than the second).
 - `-d` or `--dimension`: Set the number of dimensions, options: `10, 30, 50, 100`, e.g. `-d 10`.
 - `-nr` or `--nFESreduc`: Set the number of evaluations reduction factor, options: `0.01, 0.02, 0.03, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0`.
-- `-rn` or `--rnum`: Set the number of runs per selected function, options: unsigned integers.
-- `-o` or `--wout`: Set the write generation of data to external file, options: set `True` by options `['true', 'True', 'TRUE', 'T', 'yes', 'Yes', 'YES', 'Y']`, if write generation desired, or set `False` otherwise.
+- `-r` or `--run-type`: Run type of run. If not provided, multiple runs of the algorithm are executed, and the best position and fitness of each run get logged. Value can be:
+  - `log`: Single run. Output is shown every time new global best solution is found
+  - `plot`: Single run. Convergence graph is generated and shown.
+- `-rn` or `--rnum`: Set the number of runs per selected function, only applicable when run type is not provided. Options: positive integers.
+- `-o` or `--wout`: If this flag is set, and no run type is provided, the results of the algorithm runs will be saved to 2 files in the current working directory:
+  - `<algorithm_acronym>_<fnum>_<dimension>_p` - containing the best positions of each run.
+  - `<algorithm_acronym>_<fnum>_<dimension>_v` - containing the best fitness values of each run.
 
 ## Run example
 
-Run command: `python run_cec.py -a 'ASO' -D 10 -f 12 -r log -c 18`
+Run command: `python run_cec.py -a 'AnarchicSocietyOptimization' -D 10 -f 12 -r log -c 18`
 
 Output of run command:
 ```

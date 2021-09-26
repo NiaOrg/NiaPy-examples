@@ -5,7 +5,7 @@ import numpy as np
 from niapy.problems import Problem
 from niapy.task import Task, OptimizationType
 from niapy.util.factory import get_algorithm
-from cecargparser import getDictArgs
+from cecargparser import make_argparser_cec
 
 logging.basicConfig()
 logger = logging.getLogger('cec_run')
@@ -25,35 +25,34 @@ class MinMB(Problem):
         return self.run_fun(x, self.fnum)
 
 
-cdimsOne = [2, 10, 30, 50]
+dims_one = [2, 10, 30, 50]
 
 
-def getCecBench(cec, d):
+def get_cec_functions(cec, d):
     if cec == 6:
         sys.path.append('cec2006')
         from cec2006 import run_fun
-        if d not in cdimsOne:
-            raise RuntimeError('Dimension sould be in %s' % (d))
+        if d not in dims_one:
+            raise RuntimeError('Dimension should be in %s' % d)
     return run_fun
 
 
-def getMaxFES(cec):
+def get_max_evals(cec):
     if cec == 8:
         return 5000
     else:
         return 10000
 
 
-def run_cec(alg, cec, fnum=1, dimension=10, max_evals=50000, opt_type=OptimizationType.MINIMIZATION, wout=False, sr=(-100, 100), run_type='', runs=10, **kwargs):
-    func = getCecBench(cec, dimension)
+def run_cec(alg, cec, fnum=1, dimension=10, max_evals=50000, opt_type=OptimizationType.MINIMIZATION, wout=False, sr=(-100, 100), run_type='', runs=10, **_kwargs):
+    func = get_cec_functions(cec, dimension)
     problem = MinMB(func, dimension, sr[0], sr[1], fnum)
-    task = Task(problem, optimization_type=opt_type,
-                max_evals=max_evals, enable_logging=run_type == 'log')
 
     if not run_type:
         best_coords = []
         best_fitnesses = []
-        for _ in runs:
+        for _ in range(runs):
+            task = Task(problem, optimization_type=opt_type, max_evals=max_evals)
             best_x, best_fit = alg.run(task)
             logger.info('%s %s' % (best_x, best_fit))
             best_coords.append(best_x)
@@ -64,19 +63,23 @@ def run_cec(alg, cec, fnum=1, dimension=10, max_evals=50000, opt_type=Optimizati
                 alg.Name[1], fnum, dimension), np.asarray(best_coords))
             np.savetxt('{}_{}_{}_v'.format(
                 alg.Name[1], fnum, dimension), np.asarray(best_fitnesses))
-    else:
+    elif run_type == 'log':
+        task = Task(problem, optimization_type=opt_type,
+                    max_evals=max_evals, enable_logging=True)
         best_x, best_fit = alg.run(task)
         logger.info('%s %s' % (best_x, best_fit))
-
-    if run_type == 'plot':
+    else:
+        task = Task(problem, optimization_type=opt_type, max_evals=max_evals)
+        best_x, best_fit = alg.run(task)
+        logger.info('%s %s' % (best_x, best_fit))
         task.plot()
 
 
 if __name__ == '__main__':
-    pargs = getDictArgs(sys.argv[1:])
-    pargs['max_evals'] = round(
-        pargs['dimension'] * getMaxFES(pargs['cec']) * pargs['reduc'])
-    algo = get_algorithm(pargs['algo'], seed=pargs['seed'][0])
-    run_cec(algo, **pargs)
-
-# vim: tabstop=3 noexpandtab shiftwidth=3 softtabstop=3
+    parser = make_argparser_cec()
+    args = parser.parse_args()
+    max_evals = args.dimension * get_max_evals(args.cec) * args.reduc
+    algo = get_algorithm(args.algo, seed=args.seed[0])
+    params = vars(args)
+    params.pop('max_evals')
+    run_cec(algo, max_evals=max_evals, **params)
