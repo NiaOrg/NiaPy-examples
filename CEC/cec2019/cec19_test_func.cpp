@@ -51,6 +51,9 @@ void mexFunction (int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])
 
 */
 
+double *OShift,*M,*y,*z,*x_bound;
+int ini_flag,n_flag,func_flag,*SS;
+
 double runtest(double *x, int s, int fnum) {
 	double f;
 	cec19_test_func(x, &f, s, 1, fnum);
@@ -91,7 +94,7 @@ void cec19_test_func(double *x, double *f, int nx, int mx, int func_num) {
 		/* Load Matrix M*/
 		if (func_num > 3)
 		{
-		sprintf(FileName, "input_data/M_%d_D%d.txt", func_num,nx);
+		sprintf(FileName, "cec2019/input_data/M_%d_D%d.txt", func_num,nx);
 		fpt = fopen(FileName,"r");
 		if (fpt==NULL)
 		{
@@ -111,7 +114,7 @@ void cec19_test_func(double *x, double *f, int nx, int mx, int func_num) {
 		/* Load shift_data */
 		if (func_num > 3)
 		{
-		sprintf(FileName, "input_data/shift_data_%d.txt", func_num);
+		sprintf(FileName, "cec2019/input_data/shift_data_%d.txt", func_num);
 		fpt = fopen(FileName,"r");
 		if (fpt==NULL)
 		{
@@ -340,7 +343,7 @@ void schwefel_func (double *x, double *f, int nx, double *Os,double *Mr,int s_fl
 
 
 
-void escaffer6_func (double *x, double *f, int nx, double *Os,double *Mr,int s_flag, int r_flag) /* Expanded Scaffer¡¯s F6  */
+void escaffer6_func (double *x, double *f, int nx, double *Os,double *Mr,int s_flag, int r_flag) /* Expanded Scafferï¿½ï¿½s F6  */
 {
     int i;
     double temp1, temp2;
