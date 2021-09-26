@@ -78,7 +78,8 @@ def run_cec(alg, cec, fnum=1, dimension=10, max_evals=50000, opt_type=Optimizati
 if __name__ == '__main__':
     parser = make_argparser_cec()
     args = parser.parse_args()
-    args['max_evals'] = round(
-        args['dimension'] * get_max_evals(args['cec']) * args['reduc'])
-    algo = get_algorithm(args['algo'], seed=args['seed'][0])
-    run_cec(algo, **args)
+    max_evals = args.dimension * get_max_evals(args.cec) * args.reduc
+    algo = get_algorithm(args.algo, seed=args.seed[0])
+    params = vars(args)
+    params.pop('max_evals')
+    run_cec(algo, max_evals=max_evals, **params)
