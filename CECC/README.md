@@ -36,7 +36,7 @@ Following command line program parameters are applicable for [NiaPy-examples](ht
 
 ## Run example
 
-Run command: `python run_cec.py -a 'AnarchicSocietyOptimization' -D 10 -f 12 -r log`
+Run command: `python run_cec.py -a 'AnarchicSocietyOptimization' -d 10 -f 12 -r log`
 
 Output of run command:
 ```
