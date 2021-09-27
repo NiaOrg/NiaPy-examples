@@ -12,8 +12,6 @@
 #define TIMES_OF_EVAL  50
 #define DIMS 2
 
-int get_number_of_run();
-void record(int number_of_run, int func_number, int dim, double* x, double fx);
 
 void sphere_func (double *, double *, int , double *,double *, int, int); /* Sphere */
 void ellips_func(double *, double *, int , double *,double *, int, int); /* Ellipsoidal */

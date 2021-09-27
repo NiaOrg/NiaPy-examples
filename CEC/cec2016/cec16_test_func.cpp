@@ -47,7 +47,7 @@ double* cec16_test_func(double *x, double *f, int nx, int mx,int func_num)
 			printf("\nError: Test functions are only defined for D=10,30.\n");
 		}
 		/* Load Matrix M*/
-		sprintf(FileName, "input_data/M_%d_D%d.txt", func_num,nx);
+		sprintf(FileName, "cec2016/input_data/M_%d_D%d.txt", func_num,nx);
 
 		fpt = fopen(FileName,"r");
 		if (fpt==NULL)
@@ -77,7 +77,7 @@ double* cec16_test_func(double *x, double *f, int nx, int mx,int func_num)
 		fclose(fpt);
 		
 		/* Load shift_data */
-		sprintf(FileName, "input_data/shift_data_%d_D%d.txt", func_num,nx);
+		sprintf(FileName, "cec2016/input_data/shift_data_%d_D%d.txt", func_num,nx);
 		fpt = fopen(FileName,"r");
 		if (fpt==NULL)
 		{
@@ -116,7 +116,7 @@ double* cec16_test_func(double *x, double *f, int nx, int mx,int func_num)
 
 
 		/* Load Shuffle_data */
-		sprintf(FileName, "input_data/shuffle_data_%d_D%d.txt", func_num,nx);
+		sprintf(FileName, "cec2016/input_data/shuffle_data_%d_D%d.txt", func_num,nx);
 
 		if (func_num>=10&&func_num<=12)
 		{
@@ -292,12 +292,6 @@ double* cec16_test_func(double *x, double *f, int nx, int mx,int func_num)
 			break;
 		}
 		f[i]+=100*func_num;
-
-		#ifndef NO_RECORDING
-		record(get_number_of_run(), func_num, nx, &x[i*nx], f[i]);
-		#endif //NO_RECORDING
-
-		
 	}
 
 	return f;
