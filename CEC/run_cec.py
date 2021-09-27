@@ -29,6 +29,7 @@ dims_one = [2, 10, 30, 50]
 dims_two = [2, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 dims_three = [10, 30, 50, 100]
 dims_four = [10, 30]
+dims_five = [2, 10, 20]
 
 
 def get_cec_functions(cec, d):
@@ -75,14 +76,21 @@ def get_cec_functions(cec, d):
         from cec2019 import run_fun
         if d not in dims_three:
             raise RuntimeError('Dimension should be in %s' % dims_three)
+    elif cec == 21:
+        sys.path.append('cec2021')
+        from cec2021 import run_fun
+        if d not in dims_five:
+            raise RuntimeError('Dimension should be in %s' % dims_five)
     return run_fun
 
 
-def get_max_evals(cec):
+def get_max_evals(cec, dim, reduce):
     if cec == 8:
-        return 5000
+        return 5000 * dim * reduce
+    elif cec == 21:
+        return 1000000 * reduce if dim == 20 else 200000 * reduce
     else:
-        return 10000
+        return 10000 * dim * reduce
 
 
 def run_cec(alg, cec, fnum=1, dimension=10, max_evals=50000, opt_type=OptimizationType.MINIMIZATION, wout=False, sr=(-100, 100), run_type='', runs=10, **_kwargs):
@@ -119,7 +127,7 @@ def run_cec(alg, cec, fnum=1, dimension=10, max_evals=50000, opt_type=Optimizati
 if __name__ == '__main__':
     parser = make_argparser_cec()
     args = parser.parse_args()
-    max_evals = args.dimension * get_max_evals(args.cec) * args.reduc
+    max_evals = get_max_evals(args.cec, args.dimension, args.reduc)
     algo = get_algorithm(args.algo, seed=args.seed[0])
     params = vars(args)
     params.pop('max_evals')

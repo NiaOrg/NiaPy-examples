@@ -1,6 +1,6 @@
 from niapy.util.argparser import get_argparser
 
-ccecs = [8, 13, 14, 15, 16, 17, 18, 19]
+ccecs = [8, 13, 14, 15, 16, 17, 18, 19, 21]
 creduces = [0.01, 0.02, 0.03, 0.05, 0.1, 0.2,
             0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
 
