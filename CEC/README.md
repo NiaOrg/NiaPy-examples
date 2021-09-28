@@ -22,7 +22,7 @@ Following command line program parameters are applicable for [NiaPy-examples](ht
 - `-a` or `--algorithm`: Name of algorithm to use (name of the class of the algorithm in NiaPy).
 - `-n` or  `--population-size`: Number of individuals in population.
 - `--seed`: Set the starting seed of algorithm run. If multiple runs, user can provide list of ints, where each int usd use at new run. Default values is `None`.
-- `-c` or `--cec`: Set the year of CEC competition, options: `8, 13, 14, 15, 17, 18`, e.g. `-c 18`.
+- `-c` or `--cec`: Set the year of CEC competition, options: `8, 13, 14, 15, 17, 18, 19, 21`, e.g. `-c 18`.
 - `-f` or `--fnum`: Set the function number, options: unsigned integers, vary by the benchmark used, e.g. `-f 12`.
 - `-sr` or `--srange`: Set the lower and upper limit of search space for selected function, options: positive and negative real numbers (first number lower than the second).
 - `-d` or `--dimension`: Set the number of dimensions, options: `10, 30, 50, 100`, e.g. `-d 10`.
