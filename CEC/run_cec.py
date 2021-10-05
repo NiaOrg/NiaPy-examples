@@ -33,14 +33,11 @@ dims_five = [2, 10, 20]
 
 
 def get_cec_functions(cec, d):
-    if cec == 5:
-        sys.path.append('cec2005')
-        from cec2005 import run_fun
-        if d not in dims_one:
-            raise RuntimeError('Dimension should be in %s' % dims_one)
-    elif cec == 8:
+    if cec == 8:
         sys.path.append('cec2008')
         from cec2008 import run_fun
+        if d > 1000:
+            raise RuntimeError('Dimension should be less than 1000')
     elif cec == 13:
         sys.path.append('cec2013')
         from cec2013 import run_fun
@@ -84,18 +81,18 @@ def get_cec_functions(cec, d):
     return run_fun
 
 
-def get_max_evals(cec, dim, reduce):
+def get_max_evals(cec, dim):
     if cec == 8:
-        return 5000 * dim * reduce
+        return 5000 * dim
     elif cec == 21:
-        return 1000000 * reduce if dim == 20 else 200000 * reduce
+        return 1000000 if dim == 20 else 200000
     else:
-        return 10000 * dim * reduce
+        return 10000 * dim
 
 
-def run_cec(alg, cec, fnum=1, dimension=10, max_evals=50000, opt_type=OptimizationType.MINIMIZATION, wout=False, sr=(-100, 100), run_type='', runs=10, **_kwargs):
+def run_cec(alg, cec, fnum=1, dimension=10, max_evals=50000, opt_type=OptimizationType.MINIMIZATION, wout=False, srange=(-100, 100), run_type='', runs=10, **_kwargs):
     func = get_cec_functions(cec, dimension)
-    problem = MinMB(func, dimension, sr[0], sr[1], fnum)
+    problem = MinMB(func, dimension, srange[0], srange[1], fnum)
 
     if not run_type:
         best_coords = []
@@ -126,9 +123,7 @@ def run_cec(alg, cec, fnum=1, dimension=10, max_evals=50000, opt_type=Optimizati
 
 if __name__ == '__main__':
     parser = make_argparser_cec()
-    args = parser.parse_args()
-    max_evals = get_max_evals(args.cec, args.dimension, args.reduc)
-    algo = get_algorithm(args.algo, seed=args.seed[0])
-    params = vars(args)
-    params.pop('max_evals')
-    run_cec(algo, max_evals=max_evals, **params)
+    args = vars(parser.parse_args())
+    args['max_evals'] = get_max_evals(args['cec'], args['dimension'])
+    algo = get_algorithm(args['algo'], seed=args['seed'][0])
+    run_cec(algo, **args)

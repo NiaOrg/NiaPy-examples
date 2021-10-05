@@ -1,3 +1,2 @@
 Cython
-numpy
 NiaPy==2.0.0rc18

@@ -10,14 +10,8 @@ extensions = [
               language='c++'
               ),
 ]
-
-with open('README.md', 'r') as fh:
-    long_description = fh.read()
     
 setup(
-    description='NiaPy interface for the CEC 2021 competition',
-    long_description=long_description,
-    long_description_content_type='text/markdown',
     ext_modules=cythonize(extensions),
     extra_compile_args=['-w', '-O3', '-march=native'],
 )
