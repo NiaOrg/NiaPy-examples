@@ -38,14 +38,14 @@ CEC test suites included:
 Command line program parameters for the `run_cec.py` script:
 - `-a` or `--algorithm`: Name of algorithm to use (name of the class of the algorithm in NiaPy). The algorithm will be initialized with default parameters.
 - `--seed`: Set the starting seed of algorithm run. If multiple runs, user can provide list of ints, where each int is used at new run. Default value is `None`.
-- `-c` or `--cec`: Set the year of CEC competition, Options: `8, 13, 14, 15, 17, 18, 19, 21`, e.g. `-c 18`.
-- `-f` or `--fnum`: Set the function number, Options: vary by the benchmark used:
+- `-c` or `--cec`: Set the year of CEC competition, Options: `8, 13, 14, 15, 17, 18, 19, 21`. Default: 21
+- `-f` or `--fnum`: Set the function number. Default: 1. Options: vary by the benchmark used:
   - cec2008: 1-6
   - cec2013: 1-28
   - cec2014, cec2017, cec2018: 1-30
   - cec2015, cec2016: 1-15
   - cec2019, cec2021: 1-10
-- `-sr` or `--srange`: Set the lower and upper limit of search space for selected function, Options: real numbers (first number lower than the second), e.g `-sr -600 600`.
+- `-sr` or `--srange`: Set the lower and upper limit of search space for selected function, Options: real numbers (first number lower than the second), e.g `-sr -600 600`. Default: [-100, 100]
 - `-d` or `--dimension`: Set the number of dimensions, Options depend on testing suite used:
   - cec2008: any positive integer <= 1000
   - cec2013: `2, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100`
