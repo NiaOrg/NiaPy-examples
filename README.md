@@ -19,3 +19,11 @@ This package is distributed under the MIT License. This license can be found onl
 ## Disclaimer
 
 These examples are provided as-are, and there are no guarantees that they fit your purposes or that they are bug-free. Use it at your own risk!
+
+## References
+
+```
+      Vrbančič, G., Brezočnik, L., Mlakar, U., Fister, D., & Fister Jr., I. (2018).
+      NiaPy: Python microframework for building nature-inspired algorithms.
+      Journal of Open Source Software, 3(23), 613\. <https://doi.org/10.21105/joss.00613>
+```
