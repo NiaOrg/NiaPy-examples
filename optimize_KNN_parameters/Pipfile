@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-niapy = "==2.0.0rc18"
+niapy = ">=2.0.0"
 scikit-learn = "*"
 
 [dev-packages]
