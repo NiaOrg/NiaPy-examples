@@ -1,2 +1,2 @@
 Cython
-NiaPy==2.0.0rc18
+NiaPy>=2.0.0
